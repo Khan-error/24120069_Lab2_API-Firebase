@@ -71,3 +71,6 @@ python -m streamlit run frontend/app.py
 | AI Model   | Groq — LLaMA 3.1 8B        |
 | Auth       | Firebase Auth + Google OAuth|
 | Database   | Firebase Firestore          |
+
+
+https://github.com/user-attachments/assets/d48fed6a-b1ff-4cb1-9739-6800f7953a50
