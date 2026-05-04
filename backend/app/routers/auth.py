@@ -10,7 +10,7 @@ from firebase_admin import auth as admin_auth
 from backend.app.schemas.auth import (
     SignupRequest, LoginRequest, GoogleLoginRequest
 )
-from backend.app.core.firebase_config import get_pyrebase_auth, init_firebase_admin
+from backend.app.core.firebase_config import get_pyrebase_auth, init_firebase_admin, get_google_oauth_config
 from backend.app.dependencies.auth import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -18,12 +18,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 auth_client = get_pyrebase_auth()
 init_firebase_admin()
 
+google_cfg = get_google_oauth_config()
 
-import streamlit as st
-
-google_cfg = st.secrets["google-login"]
-
-GOOGLE_URL = google_cfg["google-url"]
 GOOGLE_CLIENT_ID = google_cfg["google_client_id"]
 GOOGLE_CLIENT_SECRET = google_cfg["google_client_secret"]
 GOOGLE_REDIRECT_URI = google_cfg["google_redirect_uri"]

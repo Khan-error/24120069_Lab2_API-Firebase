@@ -1,14 +1,28 @@
 import os
-from ollama import Client
+from groq import Groq
 
-MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://kmhvy-34-125-197-209.run.pinggy-free.link")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
-client = Client(host=OLLAMA_HOST)
+client = Groq(api_key=GROQ_API_KEY)
+
+SYSTEM_PROMPT = (
+    "Bạn là Mika, một trợ lý ảo thân thiện và hữu ích. "
+    "Hãy trả lời bằng tiếng Việt trừ khi người dùng viết bằng ngôn ngữ khác."
+)
 
 def chat_with_model(messages: list[dict]) -> str:
-    response = client.chat(
+    """Send messages to Groq and return the response text."""
+    # Build messages with system prompt
+    formatted_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    for msg in messages:
+        formatted_messages.append({
+            "role": msg["role"],
+            "content": msg["content"]
+        })
+
+    response = client.chat.completions.create(
         model=MODEL,
-        messages=messages
+        messages=formatted_messages,
     )
-    return response["message"]["content"]
+    return response.choices[0].message.content
